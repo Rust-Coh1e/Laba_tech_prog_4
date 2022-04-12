@@ -15,5 +15,7 @@ public:
 	virtual float square();
 	virtual void show();
 	virtual int checkfig();
-	
+	virtual void redact();
+	virtual void printf(std::ofstream &path);
+
 };

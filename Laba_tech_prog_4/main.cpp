@@ -3,11 +3,14 @@
 #include <cmath>
 #include <locale>
 #include <string>
+
 #include "figure.h"
 #include "circle.h"
 #include "rectangle.h"
 #include "rtringle.h"
 #include "trapetion.h"
+#include "inst.h"
+
 
 
 using namespace std;
@@ -16,10 +19,9 @@ using namespace std;
 своими функциями площади и переменными. Для проверки определить массив ссылок на
 абстрактный класс, которым присваиваются адреса различных объектов.
 */
-void addEl(Figure**& Arr, int kol);
-//void showAll(Figure**& Arr, int kol);
 
 
+int Figure::counter = 0;
 
 int main()
 {
@@ -27,9 +29,11 @@ int main()
 //Тут первый выбор откуда будут взята информация
 	
 	int c;
+	int m;
 	int kol = 0;
 	int type = 0;
 	Figure** ARR = 0;
+	
 
 	cout << "Будем ли мы брать данные из файлов?" << endl;
 	cout << "1 - Да" << endl;
@@ -44,7 +48,7 @@ int main()
 	{
 	case 1:
 	{
-		//считывание трапеции из файла
+		//считывание информации из файла
 		string path = "source\\trapetion.txt";
 		ifstream source_tr;
 		source_tr.open(path);
@@ -94,55 +98,200 @@ int main()
 			}
 			default: break;
 			}
+		}
+		break;
+		source_tr.close();
+	}
+	case 2:
+	{
+		cout << "Сколько элементов вы хотите добавить?\n";
+		cout << "--> ";
+		cin >> kol;
+		system("cls");
+		ARR = new Figure * [kol];
 
-			
 
+		float a, b, c;
+
+		for (int i = 0; i < kol; i++)
+		{
+			cout << "Какую фигуры вы хотите добавить?" << endl;
+			cout << "1. Трапеция" << endl;
+			cout << "2. Прямоугольный треугольник" << endl;
+			cout << "3. Прямоугольник" << endl;
+			cout << "4. Круг" << endl;
+			cout << "--> ";
+			cin >> type;
+			cout << endl;
+
+			switch (type)
+			{
+			case 1:
+			{
+				cout << "Введите оба основания и высоту" << endl;
+				cin >> a >> b >> c;
+				ARR[i] = new Trapetion(a, b, c);
+				break;
+			}
+			case 2:
+			{
+				cout << "Введите значение катетов" << endl;
+				cin >> a >> b;
+				ARR[i] = new Rtringle(a, b);
+				break;
+			}
+			case 3:
+			{
+				cout << "Введите значение ширины и высоты" << endl;
+				cin >> a >> b;
+				ARR[i] = new Rectangle(a, b);
+				break;
+			}
+			case 4:
+			{
+				cout << "Введите радиус" << endl;
+				cin >> a;
+				ARR[i] = new Circle(a);
+				break;
+			}
+			default: break;
+			}
+			system("cls");
 		}
 
-		//if (kol > 0) ARR = new Figure * [kol];
-		////if (c_tr > 0) AR1 = new Trapetion[c_tr];
-
-		//for (int i = 0; i < c_tr; i++)
-		//{
-		//	source_tr >> a >> b >> c;
-		//	ARR[i] = new Trapetion(a, b, c);
-		//	//ARR[i] = &AR1[i];
-		//	cout << a << " " << b << " " << c << " square " << ARR[i]->square() << endl;
-		//}
-
-	}
-	
+		break;
 
 	}
 
+	}
+
+	cout << "Итоговая очередь" << endl;
+
+	cout << Figure::counter << endl;
+
+	int flag = 1;
+
+	while (flag == 1)
+	{
+		showAll(ARR, kol);
+		cout << "Выберите операцию:" << endl;
+		cout << "1 - Добавление элемент" << endl;
+		cout << "2 - Удаление Элемент" << endl;
+		cout << "3 - Редактирование элемент" << endl;
+		cout << "0 - Выход" << endl;
+		cout << "--> ";
+		cin >> c;
 		
+		switch (c)
+		{
+		case 1:
+		{
+			system("cls");
+			float a, b, c;
+			cout << "Какую фигуры вы хотите добавить?" << endl;
+			cout << "1. Трапеция" << endl;
+			cout << "2. Прямоугольный треугольник" << endl;
+			cout << "3. Прямоугольник" << endl;
+			cout << "4. Круг" << endl;
+			cout << "--> ";
+			cin >> type;
+			cout << endl;
+
+			switch (type)
+			{
+			case 1:
+			{
+				cout << "Введите оба основания и высоту" << endl;
+				cin >> a >> b >> c;
+				addEl(ARR, kol, a, b, c);
+				kol++;
+				break;
+			}
+			case 2:
+			{
+				cout << "Введите значение катетов" << endl;
+				cin >> a >> b;
+				addEl(ARR, kol, a, b);
+				kol++;
+				break;
+			}
+			case 3:
+			{
+				cout << "Введите значение ширины и высоты" << endl;
+				cin >> a >> b;
+				addElrec(ARR, kol, a, b);
+				kol++;
+				break;
+			}
+			case 4:
+			{
+				cout << "Введите радиус" << endl;
+				cin >> a;
+				addEl(ARR, kol, a);
+				kol++;
+				break;
+			}
+			default: break;
+			}
+			system("cls");
+			break;
+		}
+		case 2:
+		{
+			cout << "Введите номер элемента, который вы хотите удалить" << endl;
+			cout << "--> ";
+			cin >> type;
+
+			delEl(ARR, kol, type - 1);
+			kol--;
+			Figure::counter--;
+			system("cls");
+			break;
+		}
+		case 3:
+		{
+			cout << "Введите номер элемента, который вы хотите изменить" << endl;
+			cout << "--> ";
+			cin >> type;
+
+			redswitch(ARR, kol, type - 1);
+
+			break;
+		}
+		case 0: {
+			
+			flag = 0;
+			break;
+		}
+		default:
+			cout << "\n";
+			flag = 0;
+			break;
+		}
+	}
+
+	cout << "Хотите ли перезаписать данные в файл?" << endl;
+	cout << "1. Перезаписать файл" << endl;
+	cout << "2. Остановить файл в первозданном виду" << endl;
+	cin >> type;
+	if (type == 1)
+	{
+		ofstream path_out;
+		path_out.open("source\\trapetion.txt");
+		if (path_out.is_open())
+		{
+			path_out << Figure::counter << " ";
+			for (int i = 0; i < Figure::counter; i++)
+			{
+				path_out << ARR[i]->checkfig() << " ";
+				ARR[i]->printf(path_out);
+			}
+		}
+		path_out.close();
+	}
 
 	return 0;
 }
 
-void addEl(Figure**& Arr, int kol)
-{
-	Figure** buff = new Figure * [kol + 1];
-	float a, b, c;
-
-	for (int i = 0; i < kol; i++)
-	{
-		buff[i] = Arr[i];
-	}
-	cout << "Input a b c >> ";
-	cin >> a >> b >> c;
-
-	buff[kol] = new Trapetion(a, b, c);
-	delete[] Arr;
-	Arr = buff;
-}
-
-//void showAll(Figure**& Arr, int kol)
-//{
-//	for (int i = 0; i < kol; i++)
-//	{
-//		Arr[i]->show();
-//	}
-//}
 
 

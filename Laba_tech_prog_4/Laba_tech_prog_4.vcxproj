@@ -142,6 +142,7 @@
     <ClCompile Include="circle_c.cpp" />
     <ClCompile Include="figure.h" />
     <ClCompile Include="figure_c.cpp" />
+    <ClCompile Include="instrumental.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rectangle_c.cpp" />
     <ClCompile Include="rtringle_c.cpp" />
@@ -149,14 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="circle.h" />
+    <ClInclude Include="inst.h" />
     <ClInclude Include="rectangle.h" />
     <ClInclude Include="rtringle.h" />
     <ClInclude Include="trapetion.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="source\circle.txt" />
-    <Text Include="source\rectangle.txt" />
-    <Text Include="source\rtringle.txt" />
     <Text Include="source\trapetion.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
